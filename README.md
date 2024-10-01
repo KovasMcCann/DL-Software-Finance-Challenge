@@ -1,6 +1,6 @@
 # [DL Software Finance Challenge](https://github.com/DL-Software/jobs)
 
-1. Download the [`options.csv`](Python/options.csv) file. Each row is an obfuscated option contract and it's corresponding bid, ask, and underlying security price.
+1. Download the [`options.csv`](./Data/options.csv) file. Each row is an obfuscated option contract and it's corresponding bid, ask, and underlying security price.
 
 2. Use the european Black-Scholes Model to calculate the implied volatility for every option in the csv.
 
@@ -19,7 +19,7 @@ Results computed with CPU vs GPU:
 | > **GPU**: N/A               | > ~~**GPU**: Nvidia RTX 3060~~  |
 <!-- | > **Storage**: 32 GB         | > - **Storage**: 32 GB          | -->
 
-The benchmark program can be seen at [`benchmark.sh`](./benchmark.sh). The core function of the program is to compute the averages over 10 runs.
+The benchmark program can be seen at [`benchmark.sh`](./Code/benchmark.sh). The core function of the program is to compute the averages over 10 runs.
 
 ## Optimization Overview
 
@@ -38,7 +38,7 @@ The task is to compute the implied volatility for options (both calls and puts) 
 
 ## Invalid Options
 
-When looking at the data provided by [`options.csv`](options.csv) some option contracts apear invalid.
+When looking at the data provided by [`options.csv`](./Data/options.csv) some option contracts apear invalid.
 
 I believe the reason for this is because the options data was randomly built or built to be inaccurate, not because my program can't handle it. Other IV calculators return `0`. See photo below.👇
 
