@@ -102,4 +102,4 @@ df['implied_volatility'] = implied_volatility
 results_df = pd.DataFrame(df[['exp', 'strike', 'bid', 'ask', 'underlying', 'implied_volatility']], columns=['exp', 'strike', 'bid', 'ask', 'underlying', 'implied_volatility'])
 results_df.to_csv('out.csv', index=False)
 
-print(df[['exp', 'strike', 'mid_price', 'implied_volatility']])
+#print(df[['exp', 'strike', 'mid_price', 'implied_volatility']])
