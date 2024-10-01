@@ -57,3 +57,7 @@ I believe the reason for this is because the options data was randomly built or 
 **[MibianLib](https://github.com/yassinemaaroufi/MibianLib/tree/master)**
 
 **[PyTorch Optimization](https://pytorch.org/tutorials/recipes/recipes/tuning_guide)**
+
+---
+This project is licensed under the NonCommercial Open License (NCOL) – see the LICENSE file for details.
+
