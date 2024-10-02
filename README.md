@@ -38,9 +38,11 @@ The task is to compute the implied volatility for options (both calls and puts) 
 
 ## Invalid Options
 
-When looking at the data provided by [`options.csv`](./Data/options.csv) some option contracts apear invalid.
+~~When looking at the data provided by [`options.csv`](./Data/options.csv) some option contracts apear invalid.~~
 
-I believe the reason for this is because the options data was randomly built or built to be inaccurate, not because my program can't handle it. Other IV calculators return `0`. See photo below.👇
+~~I believe the reason for this is because the options data was randomly built or built to be inaccurate, not because my program can't handle it. Other IV calculators return `0`. See photo below.👇~~
+
+I belive this is mostly becuase put options haven't been implemented yet.
 
 ![img](./Images/error.png)
 
