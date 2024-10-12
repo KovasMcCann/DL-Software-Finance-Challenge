@@ -59,6 +59,7 @@ for index, row in df.iterrows():
     result = minimize(objective_function, initial_guess, args=(S, K, T, r, market_price, "Call"), bounds=[(0.001, None)])
 
     if result.success:
+        print(result.x[0])
         implied_volatilities.append(result.x[0])
     else:
         implied_volatilities.append(np.nan)  # Append NaN if optimization fails
