@@ -56,10 +56,11 @@ I belive this is mostly becuase put options haven't been implemented yet.
 
 **[Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method)**
 
+**[Idea for Newton's Method](https://www.reddit.com/r/options/comments/6ea9gs/comment/did7ild/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)**
+
 **[MibianLib](https://github.com/yassinemaaroufi/MibianLib/tree/master)**
 
 **[PyTorch Optimization](https://pytorch.org/tutorials/recipes/recipes/tuning_guide)**
 
 ---
 This project is licensed under the NonCommercial Open License (NCOL) – see the LICENSE file for details.
-
