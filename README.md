@@ -28,10 +28,14 @@ The task is to compute the implied volatility for options (both calls and puts) 
 1. **Newton's Method for Root-Finding**:
    The implied volatility is calculated iteratively by applying Newton's method to minimize the difference between the theoretical and market prices of the option.
 
+2. **[CuPy](https://cupy.dev) for GPU-accelerated computations**
+
+<!-- 
 2. **Using [PyTorch](https://pytorch.org) for calculations:**
    Using pytorch to calculate equations like Black-Scholes takes advantage of pytorch's tensor operations, automatic differentiation features, batch processing and GPU Acceleration.
 
    > A further implementation of PyTorch could be used to stream live data and calculate it on they fly with [`torch.cuda.stream`](https://pytorch.org/docs/stable/generated/torch.cuda.stream.html) if given live option contracts.
+-->
 
 3. **Vectorization**:
    The program also use vectorization for the options.csv data to quickly pipe it into the IV calculator and prevent I/O bottlenecks.

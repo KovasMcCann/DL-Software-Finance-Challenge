@@ -56,10 +56,10 @@ for index, row in df.iterrows():
     initial_guess = 0.2
 
     # Minimize the objective function to find implied volatility
-    result = minimize(objective_function, initial_guess, args=(S, K, T, r, market_price, "Call"), bounds=[(0.001, None)])
+    result = minimize(objective_function, initial_guess, args=(S, K, T, r, market_price, type), bounds=[(0.001, None)])
 
     if result.success:
-        print(result.x[0])
+        print(f'S: {S}, K: {K}, T: {T}, r: {r}, market_price: {market_price}, type: {type}, IV: {result.x[0]}')
         implied_volatilities.append(result.x[0])
     else:
         implied_volatilities.append(np.nan)  # Append NaN if optimization fails
