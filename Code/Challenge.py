@@ -10,7 +10,7 @@ import torch
 import pandas as pd
 
 class BS:
-    def __init__(self, underlying, strike, risk, exp, Price, type):
+    def __init__(self, underlying, strike, risk, exp, callPrice=None):
         global device
         # Convert inputs to tensors
         self.underlyingPrice = torch.tensor(underlying, dtype=torch.float32, device=device)
@@ -18,23 +18,11 @@ class BS:
         self.interestRate = torch.tensor(risk / 100, dtype=torch.float32, device=device)
         self.daysToExpiration = torch.tensor(exp, dtype=torch.float32, device=device)
 
-        ##Code to allow for both call and put options without being gay
-        for i in range(len(type)):
-            if type[i] == 'Call':
-                self.callPrice = torch.tensor(Price[i], dtype=torch.float32, device=device)
-                self.impliedVolatilityCall = self.calculate(self.callPrice)
-            else:
-                self.putPrice = torch.tensor(Price[i], dtype=torch.float32, device=device)
-                self.impliedVolatilityPut = self.calculate(self.putPrice)
-        """ 
         if callPrice is not None:
-            self.callPrice = torch.tensor(Price, dtype=torch.float32, device=device)
+            self.callPrice = torch.tensor(callPrice, dtype=torch.float32)
             self.impliedVolatilityCall = self.calculate(self.callPrice)
-
-        if putPrice is not None:
-            self.putPrice = torch.tensor(putPrice, dtype=torch.float32, device=device)
-            self.impliedVolatilityPut = self.calculate(self.putPrice)
-        """
+        else:
+            self.callPrice = None
 
     def call_price(self, volatility):
         S = self.underlyingPrice
@@ -89,7 +77,6 @@ def ctime(exp_series):
 
     return exp_series.apply(calculate_days)
 
-#device = 'cuda' if torch.cuda.is_available() else 'cpu'
 device = 'cpu'
 print(f'running on {device}')
 
@@ -106,35 +93,13 @@ strike_tensor = df['strike'].values
 risk = 0.05  # Set the risk rate
 
 # Initialize the Black-Scholes model and calculate implied volatilities
-bs_model = BS(underlying_tensor, strike_tensor, risk, df['days_to_exp'].values, Price=df['mid_price'].values, type=df['right'].values)
-
-implied_volatility = bs_model.calculateImpliedVolatilityCall
-
-#implied_volatility = bs_model.impliedVolatilityCall if 'impliedVolatilityCall' in dir(bs_model) else bs_model.impliedVolatilityPut and print('Put')
-
-right = df['right'].values
-implied_volatilities = []
-
-# Initialize the Black-Scholes model
 bs_model = BS(underlying_tensor, strike_tensor, risk, df['days_to_exp'].values, callPrice=df['mid_price'].values)
-
-for option_type in right:
-    if option_type == 'Call':
-        implied_volatility = bs_model.impliedVolatilityCall
-        implied_volatilities.append(implied_volatility)
-    else:
-        implied_volatility = bs_model.impliedVolatilityPut
-        implied_volatilities.append(implied_volatility)
-        print('Put')
-
-# Convert to array or DataFrame if needed
-implied_volatilities = np.array(implied_volatilities)
-
+implied_volatility = bs_model.impliedVolatilityCall
 
 # Add the implied volatility to the DataFrame
 df['implied_volatility'] = implied_volatility
 
-results_df = pd.DataFrame(df[['exp', 'strike', 'right' ,'bid', 'ask', 'underlying', 'implied_volatility']], columns=['exp', 'right' , 'strike', 'bid', 'ask', 'underlying', 'implied_volatility'])
-results_df.to_csv('../Data/out.csv', index=False)
+results_df = pd.DataFrame(df[['exp', 'strike', 'bid', 'ask', 'underlying', 'implied_volatility']], columns=['exp', 'strike', 'bid', 'ask', 'underlying', 'implied_volatility'])
+results_df.to_csv('out.csv', index=False)
 
-#print(df[['exp', 'strike', 'mid_price', 'implied_volatility']])
+print(df[['exp', 'strike', 'mid_price', 'implied_volatility']])
