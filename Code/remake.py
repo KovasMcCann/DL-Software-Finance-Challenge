@@ -1,45 +1,33 @@
-import torch
+import numpy as np
+from scipy.stats import norm
+from scipy.optimize import minimize
 
-device = 'cpu'
-dtype = torch.float32
+def black_scholes(S, K, T, r, sigma, type):
+    if type == 'Put':
+        d1 = (np.log(S/K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
+        d2 = d1 - sigma * np.sqrt(T)
+        return K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
 
-def normal_cdf(x):
-    return 0.5 * (1 + torch.erf(x / torch.sqrt(torch.tensor(2.0, dtype=dtype))))
+    if type == 'Call':
+        d1 = (np.log(S/K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
+        d2 = d1 - sigma * np.sqrt(T)
+        return S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
 
-class calculate:
-    @staticmethod
-    def put(S, K, T, volatility):
-        # Creating a tensor with the input data
-        Data = torch.tensor([S, K, T, volatility], dtype=dtype, device=device)
+def objective_function(sigma, S, K, T, r, market_price, type):
+    return (black_scholes(S, K, T, r, sigma, type) - market_price) ** 2
 
-        d1 = (torch.log(Data[0] / Data[1]) + (0.5 * Data[3] ** 2) * Data[2]) / (Data[3] * torch.sqrt(Data[2]))
-        d2 = d1 - Data[3] * torch.sqrt(Data[2])
-    
-        # Return the put price calculation (using CDF of normal distribution)
-        return Data[1] * torch.exp(-0.5 * Data[2]) * normal_cdf(-d2) - Data[0] * normal_cdf(-d1)
+# Parameters
+S = 502.04
+K = 451.0
+T = 0.0822
+r = 0.05
+market_price = 70.91
 
-    @staticmethod
-    def call(S, K, T, volatility):
-        # Creating a tensor with the input data
-        Data = torch.tensor([S, K, T, volatility], dtype=dtype, device=device)
+# Initial guess for sigma
+initial_guess = 0.2
 
-        d1 = (torch.log(Data[0] / Data[1]) + (0.05 * Data[3] ** 2) * Data[2]) / (Data[3] * torch.sqrt(Data[2]))
-        d2 = d1 - Data[3] * torch.sqrt(Data[2])
-    
-        # Return the call price calculation (using CDF of normal distribution)
-        return Data[0] * normal_cdf(d1) - Data[1] * torch.exp(-0.05 * Data[2]) * normal_cdf(d2)
+# Minimize the objective function to find implied volatility
+result = minimize(objective_function, initial_guess, args=(S, K, T, r, market_price, "Call"), bounds=[(0.001, None)])
 
-if __name__ == '__main__':
-    # Define the variables
-    T = 0.0822  # Time to expiration in years (adjust as needed)
-    R = 'Call'  # Right (not used in calculations)
-    K = 451.0   # Strike price
-    price = (70.76 + 71.06) / 2  # Market price of the call option
-    #IV = 0.7174  # Implied volatility
-    IV = 1.7672  # Implied volatility
-    S = 502.0  # Underlying asset price
-    print(price)
-
-    # Calculate the call option price
-    call_price = calculate.put(S, K, T, IV)
-    print(f"Call Option Price: {call_price.item():.4f}")
+implied_volatility = result.x[0]
+print("Implied Volatility:", implied_volatility)
