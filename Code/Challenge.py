@@ -1,8 +1,8 @@
 ###################################################
 # Challenge: Calculate IV of options              #
-# Runtime:                                        #
 # Creator: Kovas McCann (KovasMcCann@outlook.com) #
 # Github: https://github.com/KovasMcCann          #
+# Need to build out completely                    #
 ###################################################
 
 import numpy as np
