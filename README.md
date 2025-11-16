@@ -30,7 +30,6 @@ The task is to compute the implied volatility for options (both calls and puts) 
 
 2. **[CuPy](https://cupy.dev) for GPU-accelerated computations**
 
-<!-- 
 2. **Using [PyTorch](https://pytorch.org) for calculations:**
    Using pytorch to calculate equations like Black-Scholes takes advantage of pytorch's tensor operations, automatic differentiation features, batch processing and GPU Acceleration.
 
